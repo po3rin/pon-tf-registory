@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     berglas = {
-      source  = "a85a-126-182-141-241.jp.ngrok.io/hirosassa/berglas"
+      source  = "51c6-126-249-132-240.jp.ngrok.io/po3rin/berglas"
     }
   }
 }

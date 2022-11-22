@@ -13,6 +13,30 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type Provider struct {
+	Protocols          []string    `json:"protocols"`
+	OS                 string      `json:"os"`
+	Arch               string      `json:"arch"`
+	Filename           string      `json:"filename"`
+	DownloadURL        string      `json:"download_url"`
+	ShasumsURL         string      `json:"shasums_url"`
+	ShasumSignatureURL string      `json:"shasums_signature_url"`
+	Shasum             string      `json:"shasum"`
+	SigningKeys        SigningKeys `json:"signing_keys"`
+}
+
+type SigningKeys struct {
+	GpgPublicKeys []GpgPublicKey `json:"gpg_public_keys"`
+}
+
+type GpgPublicKey struct {
+	KeyID          string `json:"key_id"`
+	AsciiArmor     string `json:"ascii_armor"`
+	TrustSignature string `json:"trust_signature"`
+	Source         string `json:"source"`
+	SorceURL       string `json:"source_url"`
+}
+
 func wellknown(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"providers.v1": "/v1/providers/",
@@ -116,6 +140,24 @@ func download(c *gin.Context) {
 }
 
 func regist(c *gin.Context) {
+	ns, ok := c.Params.Get("namespace")
+	if !ok {
+		c.JSON(404, "namespace param is required")
+		return
+	}
+
+	name, ok := c.Params.Get("name")
+	if !ok {
+		c.JSON(404, "name param is required")
+		return
+	}
+
+	version, ok := c.Params.Get("version")
+	if !ok {
+		c.JSON(404, "version param is required")
+		return
+	}
+
 	id := os.Getenv("PGP_ID")
 	if id == "" {
 		c.JSON(500, gin.H{
@@ -124,7 +166,16 @@ func regist(c *gin.Context) {
 		return
 	}
 
-	signingKey, err := GetPublicSigningKey(id)
+	keyFile := os.Getenv("PGP_PUBLIC_SIGNING_KEY_FILE")
+	if id == "" {
+		c.JSON(500, gin.H{
+			"message": "PGP_ID is not set",
+		})
+		return
+	}
+
+	// signingKeyPrivate, err := GetPublicSigningKey(id)
+	signingKeyPrivate, err := GetPublicSigningKeyFromFile(id, keyFile)
 	if err != nil {
 		c.JSON(500, gin.H{
 			"message": err.Error(),
@@ -132,9 +183,54 @@ func regist(c *gin.Context) {
 		return
 	}
 
-	log.Println(id)
-	log.Println(signingKey)
-	c.JSON(200, signingKey)
+	var p Provider
+	if err := c.ShouldBindJSON(&p); err != nil {
+		log.Println(err)
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	signingKeys := SigningKeys{
+		GpgPublicKeys: []GpgPublicKey{
+			{
+				KeyID:      signingKeyPrivate.KeyID,
+				AsciiArmor: signingKeyPrivate.ASCIIArmor,
+			},
+		},
+	}
+	p.SigningKeys = signingKeys
+
+	file, err := json.MarshalIndent(p, "", " ")
+	if err != nil {
+		log.Println(err)
+		c.JSON(500, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
+	err = os.MkdirAll(fmt.Sprintf("provider/%s/%s/", ns, name), os.ModePerm)
+	if err != nil {
+		log.Println(err)
+		c.JSON(500, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
+	err = ioutil.WriteFile(
+		fmt.Sprintf("provider/%s/%s/%s_%s_%s.json", ns, name, p.OS, p.Arch, version),
+		file,
+		0644,
+	)
+	if err != nil {
+		log.Println(err)
+		c.JSON(500, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+	c.JSON(200, "ok")
 }
 
 func main() {
@@ -142,6 +238,6 @@ func main() {
 	r.GET("/.well-known/terraform.json", wellknown)
 	r.GET("/v1/providers/:namespace/:name/versions", listVersions)
 	r.GET("/v1/providers/:namespace/:name/:version/download/:os/:archi", download)
-	r.POST("/v1/providers/regist", regist)
+	r.POST("/v1/providers/:namespace/:name/:version/regist", regist)
 	r.Run()
 }

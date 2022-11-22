@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"os"
 	"os/exec"
 )
 
@@ -42,4 +43,13 @@ func GetPublicSigningKey(pgpID string) (*PGPSigningKey, error) {
 		return nil, fmt.Errorf("failed to retrieve public key %s, %s", pgpID, string(msg))
 	}
 	return &PGPSigningKey{pgpID, string(key)}, nil
+}
+
+func GetPublicSigningKeyFromFile(pgpID string, pubKeyFile string) (*PGPSigningKey, error) {
+	pubKey, err := os.ReadFile(pubKeyFile)
+	if err != nil {
+		return nil, err
+	}
+
+	return &PGPSigningKey{pgpID, string(pubKey)}, nil
 }

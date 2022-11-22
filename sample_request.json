@@ -1,0 +1,12 @@
+{
+  "protocols": [
+    "5.0"
+  ],
+  "os": "darwin",
+  "arch": "amd64",
+  "filename": "terraform-provider-berglas_0.0.1_darwin_amd64.zip",
+  "download_url": "https://github.com/po3rin/terraform-provider-berglas/releases/download/v0.0.1/terraform-provider-berglas_0.0.1_darwin_amd64.zip",
+  "shasums_url": "https://github.com/po3rin/terraform-provider-berglas/releases/download/v0.0.1/terraform-provider-berglas_0.0.1_SHA256SUMS",
+  "shasums_signature_url": "https://github.com/po3rin/terraform-provider-berglas/releases/download/v0.0.1/terraform-provider-berglas_0.0.1_SHA256SUMS.sig",
+  "shasum": "4b4112d8a26c7eff9e3ba98b831aee30b0337cc03a232c12099f7350cba6c5b2"
+}

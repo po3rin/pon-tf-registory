@@ -1,0 +1,23 @@
+{
+  "protocols": [
+    "5.0"
+  ],
+  "os": "darwin",
+  "arch": "amd64",
+  "filename": "terraform-provider-berglas_0.2.1_darwin_amd64.zip",
+  "download_url": "https://github.com/hirosassa/terraform-provider-berglas/releases/download/v0.2.1/terraform-provider-berglas_0.2.1_darwin_amd64.zip",
+  "shasums_url": "https://github.com/hirosassa/terraform-provider-berglas/releases/download/v0.2.1/terraform-provider-berglas_0.2.1_SHA256SUMS",
+  "shasums_signature_url": "https://github.com/hirosassa/terraform-provider-berglas/releases/download/v0.2.1/terraform-provider-berglas_0.2.1_SHA256SUMS.sig",
+  "shasum": "0d924bd752bf1149a7c501b7cb0a5ce1ee15d9dc5330ddc8593f2ab205652c3d",
+  "signing_keys": {
+    "gpg_public_keys": [
+      {
+        "key_id": "C631DA3A99D731D6",
+        "ascii_armor": "-----BEGIN PGP PUBLIC KEY BLOCK-----\n\n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\n7Ooxqf9OK9Oourn7hFfnFqSBeIUkvOBOoCj+GFg=\n=DW4i\n-----END PGP PUBLIC KEY BLOCK-----\n",
+        "trust_signature": "",
+        "source": "",
+        "source_url": null
+      }
+    ]
+  }
+}

@@ -1,0 +1,23 @@
+{
+ "protocols": [
+  "5.0"
+ ],
+ "os": "darwin",
+ "arch": "amd64",
+ "filename": "terraform-provider-berglas_0.0.1_darwin_amd64.zip",
+ "download_url": "https://github.com/po3rin/terraform-provider-berglas/releases/download/v0.0.1/terraform-provider-berglas_0.0.1_darwin_amd64.zip",
+ "shasums_url": "https://github.com/po3rin/terraform-provider-berglas/releases/download/v0.0.1/terraform-provider-berglas_0.0.1_SHA256SUMS",
+ "shasums_signature_url": "https://github.com/po3rin/terraform-provider-berglas/releases/download/v0.0.1/terraform-provider-berglas_0.0.1_SHA256SUMS.sig",
+ "shasum": "4b4112d8a26c7eff9e3ba98b831aee30b0337cc03a232c12099f7350cba6c5b2",
+ "signing_keys": {
+  "gpg_public_keys": [
+   {
+    "key_id": "sample",
+    "ascii_armor": "-----BEGIN PGP PUBLIC KEY BLOCK-----\n\n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\nNmPRZC0IaZca7B8cd43y\n=H7DG\n-----END PGP PUBLIC KEY BLOCK-----",
+    "trust_signature": "",
+    "source": "",
+    "source_url": ""
+   }
+  ]
+ }
+}
